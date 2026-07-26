@@ -1,0 +1,17 @@
+.carousel-section {
+  margin-bottom: 48px;
+}
+
+.carousel-title {
+  color: #ffffff;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.slick-slide {
+  padding: 0 8px;
+}
+
+.slick-list {
+  overflow: hidden;
+}
