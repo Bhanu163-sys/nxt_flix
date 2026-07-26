@@ -1,10 +1,13 @@
 import {Link, useNavigate} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
+import {useWatchLater} from '../../context/WatchLaterContext'
+
 import './index.css'
 
 const Header = () => {
   const navigate = useNavigate()
+  const {watchLater} = useWatchLater()
 
   const onClickLogout = () => {
     Cookies.remove('jwt_token')
@@ -26,8 +29,17 @@ const Header = () => {
           </li>
 
           <li className="nav-item">
-            <Link to="/watch-later" className="nav-link">
+            <Link
+              to="/watch-later"
+              className="nav-link watch-later-link"
+            >
               Watch Later
+
+              {watchLater.length > 0 && (
+                <span className="watch-later-count">
+                  {watchLater.length}
+                </span>
+              )}
             </Link>
           </li>
 

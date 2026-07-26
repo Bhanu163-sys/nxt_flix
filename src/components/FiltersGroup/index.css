@@ -1,0 +1,30 @@
+.filters-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 30px 60px;
+}
+
+.filters-container::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-btn {
+  padding: 10px 22px;
+  border-radius: 24px;
+  border: 1px solid #3b3b3b;
+  background-color: #1d1d1d;
+  color: #ffffff;
+  cursor: pointer;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  background-color: #2d2d2d;
+}
+
+.active-filter {
+  background-color: #e50914;
+  border-color: #e50914;
+}

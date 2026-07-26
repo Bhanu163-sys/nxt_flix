@@ -550,3 +550,5 @@ const movies = [
     "overview": "Northern Lights is a gripping drama story that follows unforgettable characters through a journey of tension, discovery, and consequence. Critically acclaimed for its direction and performances."
   }
 ]
+
+export default movies

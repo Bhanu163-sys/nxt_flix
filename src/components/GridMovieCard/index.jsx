@@ -1,5 +1,7 @@
 import {Link} from 'react-router-dom'
-import {FaPlay, FaStar} from 'react-icons/fa'
+import {FaStar} from 'react-icons/fa'
+import {BsFillPlayFill} from 'react-icons/bs'
+
 
 import './index.css'
 
@@ -29,7 +31,9 @@ const GridMovieCard = props => {
           </div>
 
           <div className="play-overlay">
-            <FaPlay className="play-icon" />
+            <div className="play-btn">
+             <BsFillPlayFill className="play-icon" />
+            </div>
           </div>
 
           <div className="movie-content">
@@ -40,7 +44,7 @@ const GridMovieCard = props => {
               <span>•</span>
               <span>{year}</span>
               <span>•</span>
-              <span>{duration} min</span>
+              <span>{duration}</span>
             </div>
           </div>
         </div>

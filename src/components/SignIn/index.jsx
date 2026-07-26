@@ -1,5 +1,7 @@
 import {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 import {Navigate} from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 import './index.css';   
 
@@ -8,6 +10,8 @@ const SignIn = () => {
   const [passwordInput, setPasswordInput] = useState('')
   const [showSubmitError, setShowSubmitError] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
   const onChangeEmail = event => {
     setEmailInput(event.target.value)
@@ -17,20 +21,57 @@ const SignIn = () => {
     setPasswordInput(event.target.value)
   }
 
+  const onSubmitSuccess = jwtToken => {
+    Cookies.set('jwt_token', jwtToken, {expires: 7})
+    setShowSubmitError(false)
+    navigate('/', {replace: true})
+  }
+
+  const onSubmitFailure = errorMsg => {
+    setShowSubmitError(true)
+    setErrorMsg(errorMsg)
+  }
+
   const onSubmitForm = async event => {
     event.preventDefault()
-    const userDetails={email:emailInput,password:passwordInput}
+
+    setIsLoading(true)
+
+    const userDetails = {
+      email: emailInput,
+      password: passwordInput,
+    }
+
     const url = 'https://serverless-api-teal.vercel.app/api/auth/signin'
-    const options={
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      body:JSON.stringify(userDetails),
+      body: JSON.stringify(userDetails),
+    }
+
+    try {
+      const response = await fetch(url, options)
+      const data = await response.json()
+
+      if (response.ok) {
+        onSubmitSuccess(data.data.token)
+      } else {
+        onSubmitFailure(data.message)
       }
-    const response= await fetch(url,options)
-    const data= await response.json()
-    console.log(data)
+    } catch (error) {
+      onSubmitFailure('Something went wrong. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const jwtToken = Cookies.get('jwt_token')
+
+  if (jwtToken !== undefined) {
+    return <Navigate to="/" replace />
   }
 
   return (
@@ -51,7 +92,13 @@ const SignIn = () => {
                 <input type='email' id='email' className='sign-in-form-input' placeholder='Enter your email' value={emailInput} onChange={onChangeEmail} />
                 <label htmlFor='password' className='sign-in-form-label'>PASSWORD</label>
                 <input type='password' id='password' className='sign-in-form-input' placeholder='Enter your password' value={passwordInput} onChange={onChangePassword} />
-                <button type='submit' className='sign-in-form-btn'>Sign In</button>
+                <button
+                  type="submit"
+                  className="sign-in-form-btn"
+                  disabled={isLoading}
+                >
+                 {isLoading ? 'Signing in...' : 'Sign In'}
+                </button>
             </form>
         </div>
       </div>
